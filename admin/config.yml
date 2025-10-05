@@ -1,0 +1,25 @@
+backend:
+  name: github
+  repo: SSSergiy/vite-marcup-decup
+  branch: dev
+  site_domain: https://vite-marcup-decup.pages.dev
+  base_url: https://vite-marcup-decup.pages.dev
+  auth_endpoint: /api/auth
+
+media_folder: "src/img/uploads"
+public_folder: "/img/uploads"
+
+collections:
+  - name: "settings"
+    label: "Settings"
+    files:
+      - label: "Blog Data"
+        name: "blog"
+        file: "src/_data/blog.json"
+        fields:
+          - label: "Posts"
+            name: "posts"
+            widget: "list"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Body", name: "body", widget: "text" }
