@@ -10,28 +10,49 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Клонируем репозиторий
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
+      # 2. Настройка Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
+      # 3. Установка зависимостей
       - name: Install dependencies
         run: npm install
 
+      # 4. Сборка проекта
       - name: Build project
-        run: npm run build
+        run: |
+          npm run build
+          echo "Содержимое папки dist:"
+          ls -la dist
 
-      - name: Push build to main
+      # 5. Пуш сборки в main
+      - name: Deploy build to main
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Переключаемся на main
           git checkout main
+          
+          # Удаляем старые файлы
           git rm -r *
-          cp -r dist/* .
+          
+          # Проверяем, что dist существует, и копируем файлы
+          if [ -d "dist" ]; then
+            cp -r dist/* .
+          else
+            echo "Ошибка: папка dist не найдена"
+            exit 1
+          fi
+          
+          # Коммитим и пушим изменения
           git add .
-          git commit -m "Deploy from dev"
+          git commit -m "Deploy build from dev"
           git push origin main --force
