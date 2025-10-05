@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout dev
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -23,22 +24,12 @@ jobs:
         run: npm install
 
       - name: Build project
-        run: |
-          npm run build
-          echo "Содержимое dist:"
-          ls -la dist
-          # Копируем сборку во временную папку вне репозитория
-          mkdir -p /tmp/build-temp
-          cp -r dist/* /tmp/build-temp/
+        run: npm run build
 
       - name: Deploy build to main
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout main
-          git rm -r *
-          # Копируем из временной папки вне репозитория
-          cp -r /tmp/build-temp/* .
-          git add .
-          git commit -m "Deploy build from dev"
-          git push origin main --force
+        uses: peaceiris/actions-gh-pages@v7
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: main
+          force_orphan: true
