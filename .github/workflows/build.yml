@@ -10,47 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Клонируем репозиторий полностью
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      # 2. Настройка Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      # 3. Установка зависимостей
       - name: Install dependencies
         run: npm install
 
-      # 4. Сборка проекта
       - name: Build project
         run: |
           npm run build
-          echo "Содержимое папки dist:"
+          echo "Содержимое dist:"
           ls -la dist
-          # Сохраняем сборку в папке build-temp внутри репозитория
-          mkdir -p build-temp
-          cp -r dist/* build-temp/
+          # Копируем сборку во временную папку вне репозитория
+          mkdir -p /tmp/build-temp
+          cp -r dist/* /tmp/build-temp/
 
-      # 5. Деплой сборки в main
       - name: Deploy build to main
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Переключаемся на main
           git checkout main
-          
-          # Удаляем старые файлы
           git rm -r *
-          
-          # Копируем сборку из build-temp
-          cp -r build-temp/* .
-          
-          # Добавляем изменения, коммитим и пушим
+          # Копируем из временной папки вне репозитория
+          cp -r /tmp/build-temp/* .
           git add .
           git commit -m "Deploy build from dev"
           git push origin main --force
