@@ -1,9 +1,9 @@
-import imagemin from 'imagemin'
-import imageminWebp from 'imagemin-webp'
-import path from 'path'
-import { defineConfig } from 'vite'
-import glob from 'fast-glob'
-import { fileURLToPath } from 'url'
+// import imagemin from 'imagemin'
+// import imageminWebp from 'imagemin-webp'
+import glob from 'fast-glob';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { defineConfig } from 'vite';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
 // you can use our path for your project
@@ -32,15 +32,15 @@ export default defineConfig({
 				quality: 70,
 			}
 		}),
-		{
-			...imagemin(['./src/img/**/*.{jpg,png,jpeg}'], {
-				destination: './src/img/webp/',
-				plugins: [
-					imageminWebp({ quality: 70 })
-				]
-			}),
-			apply: 'serve',
-		}
+		// {
+		// 	...imagemin(['./src/img/**/*.{jpg,png,jpeg}'], {
+		// 		destination: './src/img/webp/',
+		// 		plugins: [
+		// 			imageminWebp({ quality: 70 })
+		// 		]
+		// 	}),
+		// 	apply: 'serve',
+		// }
 	],
 	build: {
 		rollupOptions: {
