@@ -31,8 +31,9 @@ jobs:
           npm run build
           echo "Содержимое папки dist:"
           ls -la dist
-          # Сохраняем сборку во временную папку до переключения ветки
-          cp -r dist ../build-temp
+          # Сохраняем сборку в папке build-temp внутри репозитория
+          mkdir -p build-temp
+          cp -r dist/* build-temp/
 
       # 5. Деплой сборки в main
       - name: Deploy build to main
@@ -46,8 +47,8 @@ jobs:
           # Удаляем старые файлы
           git rm -r *
           
-          # Копируем сборку из временной папки
-          cp -r ../build-temp/* .
+          # Копируем сборку из build-temp
+          cp -r build-temp/* .
           
           # Добавляем изменения, коммитим и пушим
           git add .
