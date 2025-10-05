@@ -4,7 +4,7 @@ backend:
   branch: dev
   site_domain: https://vite-marcup-decup.pages.dev
   base_url: https://vite-marcup-decup.pages.dev/admin
-  auth_endpoint: /api/callback
+  auth_endpoint: /api/auth
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
