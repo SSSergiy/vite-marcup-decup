@@ -3,7 +3,7 @@ backend:
   repo: "SSSergiy/vite-marcup-decup"
   branch: dev
   site_domain: https://vite-marcup-decup.pages.dev
-  base_url: https://vite-marcup-decup.pages.dev
+  base_url: https://vite-marcup-decup.pages.dev/admin
   auth_endpoint: /api/auth
 
 media_folder: "public/uploads"
