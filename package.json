@@ -1,21 +1,35 @@
 {
-  "name": "started-vite-template",
+  "name": "eleventy-sample",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "npm-run-all --parallel dev:*",
+    "dev:eleventy": "eleventy --serve --port=8080 --config=.eleventy.js",
+    "dev:vite": "vite",
+    "build": "npm-run-all build:vite build:eleventy",
+    "build:vite": "vite build",
+    "build:eleventy": "eleventy --config=.eleventy.js",
     "preview": "vite preview"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "browserslist": [
     "cover 99.5%"
   ],
+  "dependencies": {
+    "@11ty/eleventy-plugin-ejs": "^1.0.0",
+    "ejs": "^3.1.10"
+  },
   "devDependencies": {
+    "@11ty/eleventy": "^3.1.2",
     "autoprefixer": "^10.4.20",
     "fast-glob": "^3.3.3",
     "imagemin": "^9.0.1",
     "imagemin-webp": "^8.0.0",
+    "npm-run-all": "^4.1.5",
     "postcss-sort-media-queries": "^5.2.0",
     "sass": "^1.85.1",
     "sharp": "^0.33.5",
