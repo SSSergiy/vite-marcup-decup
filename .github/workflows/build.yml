@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Клонируем репозиторий
+      # 1. Клонируем репозиторий полностью
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -31,8 +31,10 @@ jobs:
           npm run build
           echo "Содержимое папки dist:"
           ls -la dist
+          # Сохраняем сборку во временную папку до переключения ветки
+          cp -r dist ../build-temp
 
-      # 5. Пуш сборки в main
+      # 5. Деплой сборки в main
       - name: Deploy build to main
         run: |
           git config user.name "github-actions[bot]"
@@ -44,15 +46,10 @@ jobs:
           # Удаляем старые файлы
           git rm -r *
           
-          # Проверяем, что dist существует, и копируем файлы
-          if [ -d "dist" ]; then
-            cp -r dist/* .
-          else
-            echo "Ошибка: папка dist не найдена"
-            exit 1
-          fi
+          # Копируем сборку из временной папки
+          cp -r ../build-temp/* .
           
-          # Коммитим и пушим изменения
+          # Добавляем изменения, коммитим и пушим
           git add .
           git commit -m "Deploy build from dev"
           git push origin main --force
